@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+:root {
+  --background: #00263a; /* Republic Airways Navy */
+  --foreground: #ffffff;
+  --ra-navy: #00263a;
+  --ra-red: #c8102e;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Ensure all inputs have black text */
+input, select, textarea {
+  color: #000000 !important;
+}
+
+input::placeholder {
+  color: #9ca3af !important;
+}

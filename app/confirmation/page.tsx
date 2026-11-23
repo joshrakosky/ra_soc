@@ -1,0 +1,89 @@
+'use client'
+
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import ExportOrdersButton from '@/components/ExportOrdersButton'
+import HelpIcon from '@/components/HelpIcon'
+
+export default function ConfirmationPage() {
+  const router = useRouter()
+  const [orderNumber, setOrderNumber] = useState('')
+
+  useEffect(() => {
+    const orderNum = sessionStorage.getItem('orderNumber')
+    if (!orderNum) {
+      router.push('/')
+      return
+    }
+    // sessionStorage is client-only; apply after mount so SSR stays empty.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setOrderNumber(orderNum)
+  }, [router])
+
+  const handleClose = () => {
+    sessionStorage.clear()
+    router.push('/')
+  }
+
+  if (!orderNumber) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-white text-xl">Loading...</div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="min-h-screen flex items-center justify-center px-4 relative">
+      <ExportOrdersButton />
+      <HelpIcon />
+      <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8 text-center relative z-10">
+        <button
+          onClick={handleClose}
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 focus:outline-none transition-colors"
+          aria-label="Close"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+
+        <div className="mb-6">
+          <div
+            className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full text-3xl text-white"
+            style={{ backgroundColor: '#c8102e' }}
+            aria-hidden
+          >
+            ✓
+          </div>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Order Confirmed!</h1>
+          <p className="text-gray-600">Thank you for your SOC appreciation gift order</p>
+        </div>
+
+        <div className="bg-gray-50 rounded-lg p-6 mb-6">
+          <p className="text-sm text-gray-600 mb-2">Your Order Number:</p>
+          <p className="text-2xl font-bold" style={{ color: '#c8102e' }}>
+            {orderNumber}
+          </p>
+        </div>
+
+        <p className="text-sm text-gray-600 mb-6">
+          Screenshot this page or email yourself your order number by clicking the button below
+        </p>
+
+        <a
+          href={`mailto:?subject=Republic Airways SOC Gift Confirmation - ${orderNumber}&body=Thank you for your order!%0D%0A%0D%0AYour Order Number: ${orderNumber}%0D%0A%0D%0AThank you`}
+          onClick={() => {
+            setTimeout(() => {
+              sessionStorage.clear()
+            }, 100)
+          }}
+          className="w-full px-6 py-2 text-white rounded-md hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-[#c8102e] focus:ring-offset-2 font-medium inline-block text-center"
+          style={{ backgroundColor: '#c8102e' }}
+        >
+          Email Order Confirmation
+        </a>
+      </div>
+    </div>
+  )
+}
