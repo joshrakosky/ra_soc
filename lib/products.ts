@@ -1,6 +1,7 @@
 // SOC catalog helpers. Products live in ra_soc_products (no pricing).
 // Color/logo/size availability comes from the appreciation gift spreadsheet.
 
+import { catalogImagePath } from '@/lib/catalog-images'
 import { supabase } from '@/lib/supabase'
 import type { LogoBrand, ProductColor, SizeAvailability } from '@/types'
 
@@ -116,32 +117,33 @@ export function sizesForColor(color: ProductColor | undefined): string[] {
   return order.filter((size) => keys.includes(size)).concat(keys.filter((k) => !order.includes(k)))
 }
 
-/** Prefer brand-specific color photo, then shared image_url, then product fallback. */
+/**
+ * Colors with a single size (usually OS) should not ask the shopper to pick.
+ * The size is still stored on the order and export.
+ */
+export function soleSizeForColor(color: ProductColor | undefined): string | undefined {
+  const sizes = sizesForColor(color)
+  return sizes.length === 1 ? sizes[0] : undefined
+}
+
+/** Brand-specific thumbnail from public/images, then the catalog fallback. */
 export function previewImage(
   product: SocProduct,
   colorName?: string,
   brand?: LogoBrand
 ): string {
-  const resolve = (color: ProductColor | undefined): string | undefined => {
-    if (!color) return undefined
-    if (brand && color.images?.[brand]) return color.images[brand]
-    return color.image_url
+  const color =
+    (colorName ? product.colors?.find((entry) => entry.name === colorName) : undefined) ??
+    (brand ? colorsForBrand(product, brand)[0] : undefined) ??
+    product.colors?.[0]
+
+  if (color) {
+    const logo: LogoBrand = brand ?? 'RA'
+    if (color.logos[logo] || !brand) {
+      return catalogImagePath(product.item_number, color.name, logo)
+    }
   }
 
-  if (colorName) {
-    const match = product.colors?.find((color) => color.name === colorName)
-    const url = resolve(match)
-    if (url) return url
-  }
-
-  // Grid cards: first color eligible for the shopper's logo brand.
-  if (brand) {
-    const firstBrandColor = colorsForBrand(product, brand)[0]
-    const url = resolve(firstBrandColor)
-    if (url) return url
-  }
-
-  if (product.colors?.[0]?.image_url) return product.colors[0].image_url
   return product.image_url || '/images/placeholder-product.svg'
 }
 

@@ -17,6 +17,7 @@ import {
   productRequiresColor,
   productRequiresSize,
   sizesForColor,
+  soleSizeForColor,
   type ProductStyle,
   type SocProduct,
 } from '@/lib/products'
@@ -116,11 +117,13 @@ export default function ProductsPage() {
       setError('Please choose a color to continue')
       return
     }
-    if (needsSize && !current.size) {
+    // One-size goods skip the picker; that lone size is still what we save.
+    const chosenSize = soleSizeForColor(colorMatch) ?? current.size
+    if (needsSize && !chosenSize) {
       setError('Please choose a size to continue')
       return
     }
-    if (needsSize && colorMatch && !isSizeAvailable(colorMatch, current.size)) {
+    if (needsSize && colorMatch && !isSizeAvailable(colorMatch, chosenSize)) {
       setError('That size is unavailable. Please choose another size.')
       return
     }
@@ -132,7 +135,7 @@ export default function ProductsPage() {
       itemNumber: activeProduct.item_number,
       imageUrl: previewImage(activeProduct, current.color, brand),
       logo: brand,
-      size: needsSize ? current.size : undefined,
+      size: needsSize ? chosenSize : undefined,
       color: needsColor ? current.color : undefined,
     }
     setProductSelection(selection)
@@ -155,9 +158,9 @@ export default function ProductsPage() {
     const current = selections[activeProduct.id]
     if (productRequiresColor(activeProduct, brand) && !current?.color) return false
     if (productRequiresSize(activeProduct, brand)) {
-      if (!current?.size) return false
-      const color = getProductColor(activeProduct, brand, current.color)
-      if (!isSizeAvailable(color, current.size)) return false
+      const color = getProductColor(activeProduct, brand, current?.color ?? '')
+      const chosenSize = soleSizeForColor(color) ?? current?.size
+      if (!chosenSize || !isSizeAvailable(color, chosenSize)) return false
     }
     return true
   })()
@@ -183,20 +186,29 @@ export default function ProductsPage() {
           </p>
         </div>
 
-        <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        {/* Back on the left, search centered, style filter on the right. */}
+        <div className="mb-6 grid grid-cols-1 items-center gap-3 sm:grid-cols-[1fr_auto_1fr]">
+          <button
+            type="button"
+            onClick={() => router.push('/brand')}
+            className="w-fit px-6 py-2 text-white rounded-md hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-[#c8102e] focus:ring-offset-2 font-medium"
+            style={{ backgroundColor: '#c8102e' }}
+          >
+            ← Back
+          </button>
           <input
             id="product-search"
             type="search"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search products"
-            className="w-full sm:max-w-xs px-4 py-2 rounded-md bg-white text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#c8102e]"
+            className="w-full sm:w-72 justify-self-center px-4 py-2 rounded-md bg-white text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#c8102e]"
           />
           <select
             id="product-style"
             value={styleFilter}
             onChange={(e) => setStyleFilter(e.target.value as ProductStyle | '')}
-            className="w-full sm:w-48 px-4 py-2 rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#c8102e]"
+            className="w-full sm:w-48 justify-self-end px-4 py-2 rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#c8102e]"
           >
             <option value="">All styles</option>
             {PRODUCT_STYLES.map((style) => (
@@ -225,7 +237,7 @@ export default function ProductsPage() {
           </div>
         )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {visibleProducts.map((product) => (
             <button
               key={product.id}
@@ -234,7 +246,8 @@ export default function ProductsPage() {
               className="group bg-white rounded-lg shadow-lg p-3 text-left transition-shadow duration-200 hover:shadow-[0_0_22px_rgba(200,16,46,0.45)] focus:outline-none focus:ring-4 focus:ring-[#c8102e]"
             >
               <h2 className="text-sm font-bold text-gray-900 mb-2 leading-snug min-h-[2.5rem]">{product.name}</h2>
-              <div className="aspect-[2/3] w-full overflow-hidden rounded-md bg-gray-100">
+              {/* Square frame, contain so wide product shots are not cropped. */}
+              <div className="aspect-square w-full overflow-hidden rounded-md bg-gray-100">
                 <CatalogImage
                   src={previewImage(product, undefined, brand ?? undefined)}
                   fallbacks={[
@@ -246,23 +259,13 @@ export default function ProductsPage() {
                     '/images/placeholder-product.svg',
                   ]}
                   alt={product.name}
-                  className="block w-full h-full object-cover object-top transition-transform duration-200 group-hover:scale-105"
+                  className="block w-full h-full object-contain transition-transform duration-200 group-hover:scale-105"
                 />
               </div>
             </button>
           ))}
         </div>
 
-        <div className="mt-8">
-          <button
-            type="button"
-            onClick={() => router.push('/brand')}
-            className="px-6 py-2 text-white rounded-md hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-[#c8102e] focus:ring-offset-2 font-medium"
-            style={{ backgroundColor: '#c8102e' }}
-          >
-            ← Back
-          </button>
-        </div>
       </div>
 
       {activeProduct && (
@@ -291,7 +294,7 @@ export default function ProductsPage() {
               </button>
             </div>
 
-            <div className="aspect-[2/3] w-full overflow-hidden rounded-md mb-4 bg-gray-100">
+            <div className="aspect-square w-full overflow-hidden rounded-md mb-4 bg-gray-100">
               <CatalogImage
                 src={previewImage(activeProduct, activeColorName, brand ?? undefined)}
                 fallbacks={[
@@ -303,7 +306,7 @@ export default function ProductsPage() {
                   '/images/placeholder-product.svg',
                 ]}
                 alt={`${activeProduct.name} ${activeColorName || ''}`}
-                className="block w-full h-full object-cover object-top"
+                className="block w-full h-full object-contain"
               />
             </div>
 
@@ -333,7 +336,7 @@ export default function ProductsPage() {
                 </div>
               )}
 
-              {productRequiresSize(activeProduct, brand) && (
+              {productRequiresSize(activeProduct, brand) && !soleSizeForColor(activeColor) && (
                 <div>
                   <p className="block text-sm font-medium text-gray-700 mb-2">Size</p>
                   <div className="flex flex-wrap gap-2">

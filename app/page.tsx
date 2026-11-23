@@ -68,8 +68,6 @@ export default function LandingPage() {
             Continue →
           </button>
         </form>
-
-        <p className="mt-4 text-xs text-center text-gray-500">One order per email.</p>
       </div>
     </div>
   )
