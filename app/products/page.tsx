@@ -181,9 +181,7 @@ export default function ProductsPage() {
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-10">
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">Choose Your Product</h1>
-          <p className="text-white/80">
-            Select 1 product · Logo: {brand === 'RA' ? 'Republic' : 'Mesa'}
-          </p>
+          <p className="text-white/80">Select 1 product</p>
         </div>
 
         {/* Back on the left, search centered, style filter on the right. */}

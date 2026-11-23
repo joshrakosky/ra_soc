@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import * as XLSX from 'xlsx'
+import { buildOrderDetailRows, buildProductCountRows, socExportFilename } from '@/lib/export-orders'
 import { fetchAllRows } from '@/lib/fetch-all-rows'
 import { supabase } from '@/lib/supabase'
 import type { Order } from '@/types'
@@ -50,33 +51,13 @@ export default function ExportOrdersButton() {
           .range(from, to)
       )
 
-      const rows = orders.map((order) => ({
-        'Order Number': order.order_number,
-        'First Name': order.first_name,
-        'Last Name': order.last_name,
-        Email: order.email,
-        'Product Name': order.product_name,
-        'Item Number': order.item_number,
-        Color: order.color || '',
-        Size: order.size || '',
-        Logo: order.logo,
-        SKU: order.sku,
-        'Ship Location ID': order.shipping_location_id,
-        'Shipping Name': order.shipping_name,
-        'Shipping Attention': order.shipping_attention || '',
-        'Shipping Address': order.shipping_address,
-        'Address 2': order.shipping_address2 || '',
-        City: order.shipping_city,
-        State: order.shipping_state,
-        ZIP: order.shipping_zip,
-        Country: order.shipping_country,
-        'Order Date': new Date(order.created_at).toLocaleDateString(),
-      }))
-
+      // Sheet 1 is every order. Sheet 2 totals units by product, color, size, and logo.
+      const detailRows = buildOrderDetailRows(orders)
+      const countRows = buildProductCountRows(orders)
       const workbook = XLSX.utils.book_new()
-      const sheet = XLSX.utils.json_to_sheet(rows)
-      XLSX.utils.book_append_sheet(workbook, sheet, 'Orders')
-      XLSX.writeFile(workbook, `ra-soc-orders-${new Date().toISOString().split('T')[0]}.xlsx`)
+      XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(detailRows), 'Order Details')
+      XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(countRows), 'Product Counts')
+      XLSX.writeFile(workbook, socExportFilename())
     } catch (error) {
       console.error('Export error:', error)
       alert('Failed to export orders. Please try again.')
