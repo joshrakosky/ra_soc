@@ -127,6 +127,7 @@ export default function ReviewPage() {
             <h2 className="text-xl font-semibold text-gray-900 mb-4">Shipping Location</h2>
             <div className="bg-gray-50 rounded-lg p-4">
               <p className="font-medium text-gray-900">{shipping.locationLabel}</p>
+              <p className="text-sm text-gray-600">Attn: {shipping.attention}</p>
               <p className="text-sm text-gray-600">{shipping.address}</p>
               {shipping.address2?.trim() && (
                 <p className="text-sm text-gray-600">{shipping.address2}</p>

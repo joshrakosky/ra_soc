@@ -39,29 +39,24 @@ export default function BrandPage() {
           <p className="text-white/80">This selects which logo and colors are available on your gift.</p>
         </div>
 
+        {/* Logo-only cards — brand name/subtext removed per design. */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <button
             type="button"
             onClick={() => choose('RA')}
-            className="bg-white rounded-lg shadow-lg p-8 text-center hover:shadow-[0_0_22px_rgba(200,16,46,0.45)] focus:outline-none focus:ring-4 focus:ring-[#c8102e] transition-shadow"
+            aria-label="Republic Airways"
+            className="bg-white rounded-lg shadow-lg p-8 flex items-center justify-center min-h-[140px] hover:shadow-[0_0_22px_rgba(200,16,46,0.45)] focus:outline-none focus:ring-4 focus:ring-[#c8102e] transition-shadow"
           >
-            <div className="flex justify-center mb-4 min-h-[64px] items-center">
-              <RALogo className="max-w-[140px]" />
-            </div>
-            <p className="text-xl font-semibold text-gray-900">Republic</p>
-            <p className="text-sm text-gray-600 mt-1">Republic Airways logo</p>
+            <RALogo className="max-w-[160px]" />
           </button>
 
           <button
             type="button"
             onClick={() => choose('MESA')}
-            className="bg-white rounded-lg shadow-lg p-8 text-center hover:shadow-[0_0_22px_rgba(200,16,46,0.45)] focus:outline-none focus:ring-4 focus:ring-[#c8102e] transition-shadow"
+            aria-label="Mesa Airlines"
+            className="bg-white rounded-lg shadow-lg p-8 flex items-center justify-center min-h-[140px] hover:shadow-[0_0_22px_rgba(200,16,46,0.45)] focus:outline-none focus:ring-4 focus:ring-[#c8102e] transition-shadow"
           >
-            <div className="flex justify-center mb-4 min-h-[64px] items-center">
-              <MesaLogo className="max-w-[140px]" />
-            </div>
-            <p className="text-xl font-semibold text-gray-900">Mesa</p>
-            <p className="text-sm text-gray-600 mt-1">Mesa Airlines logo</p>
+            <MesaLogo className="max-w-[160px]" />
           </button>
         </div>
 

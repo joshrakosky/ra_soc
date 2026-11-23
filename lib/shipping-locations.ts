@@ -1,9 +1,10 @@
-// Fixed ship-to locations for SOC gifts.
-// Addresses are TBD — update this file when real destinations are confirmed.
+// Fixed ship-to locations for SOC gifts (IND HQ + PHX HQ).
 
 export interface ShippingLocation {
   id: string
   label: string
+  /** Printed on the label as Attn: … */
+  attention: string
   address: string
   address2: string
   city: string
@@ -14,23 +15,25 @@ export interface ShippingLocation {
 
 export const SHIPPING_LOCATIONS: ShippingLocation[] = [
   {
-    id: 'loc_a',
-    label: 'Location A (TBD)',
-    address: 'Address TBD',
+    id: 'ind_hq',
+    label: 'IND HQ',
+    attention: 'SOC Program Manager',
+    address: '2 Brickyard Lane',
     address2: '',
-    city: 'City TBD',
-    state: 'XX',
-    zip: '00000',
+    city: 'Carmel',
+    state: 'IN',
+    zip: '46032',
     country: 'USA',
   },
   {
-    id: 'loc_b',
-    label: 'Location B (TBD)',
-    address: 'Address TBD',
-    address2: '',
-    city: 'City TBD',
-    state: 'XX',
-    zip: '00000',
+    id: 'phx_hq',
+    label: 'PHX HQ',
+    attention: 'SOC Program Manager',
+    address: '410 N. 44th Street',
+    address2: 'Suite 700',
+    city: 'Phoenix',
+    state: 'AZ',
+    zip: '85008',
     country: 'USA',
   },
 ]

@@ -41,6 +41,7 @@ export interface ShippingInfo {
   email: string
   locationId: string
   locationLabel: string
+  attention: string
   address: string
   address2: string
   city: string

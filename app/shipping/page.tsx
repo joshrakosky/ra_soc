@@ -69,6 +69,7 @@ export default function ShippingPage() {
       email: email.trim().toLowerCase(),
       locationId: location.id,
       locationLabel: location.label,
+      attention: location.attention,
       address: location.address,
       address2: location.address2,
       city: location.city,
@@ -162,9 +163,7 @@ export default function ShippingPage() {
 
             <div className="space-y-4 pt-4 border-t">
               <h2 className="text-xl font-semibold text-gray-900 border-b pb-2">Delivery Location</h2>
-              <p className="text-sm text-gray-600">
-                Choose where your gift should ship. Addresses will be finalized soon.
-              </p>
+              <p className="text-sm text-gray-600">Choose IND HQ or PHX HQ for delivery.</p>
 
               <div className="space-y-3">
                 {SHIPPING_LOCATIONS.map((location) => {
@@ -186,6 +185,9 @@ export default function ShippingPage() {
                       />
                       <span>
                         <span className="block font-medium text-gray-900">{location.label}</span>
+                        <span className="block text-sm text-gray-600">
+                          Attn: {location.attention}
+                        </span>
                         <span className="block text-sm text-gray-600">
                           {location.address}
                           {location.address2 ? `, ${location.address2}` : ''}

@@ -139,7 +139,7 @@ export async function POST(request: NextRequest) {
         logo,
         shipping_location_id: location.id,
         shipping_name: `${String(firstName).trim()} ${String(lastName).trim()}`,
-        shipping_attention: location.label,
+        shipping_attention: location.attention,
         shipping_address: location.address,
         shipping_address2: location.address2 || null,
         shipping_city: location.city,

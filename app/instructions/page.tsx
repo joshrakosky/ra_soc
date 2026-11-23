@@ -23,24 +23,32 @@ export default function InstructionsPage() {
       <HelpIcon />
 
       <div className="relative z-10 w-full max-w-2xl rounded-lg bg-white p-5 shadow-lg sm:p-8 md:p-10">
-        <h1 className="mb-4 text-2xl font-bold text-gray-900">Before you shop</h1>
-        <p className="mb-6 text-gray-700">
-          Welcome to the Republic Airways SOC appreciation gift store. Please read these notes, then continue.
-        </p>
+        <h1 className="mb-4 text-2xl font-bold text-gray-900">
+          Welcome to the Republic Airways SOC Appreciation Gift Redemption Site!
+        </h1>
 
+        {/* Copy aligned with Instructions.docx */}
         <ul className="mb-8 list-disc space-y-3 pl-5 text-gray-700">
           <li>
-            You may select <strong>one product</strong> only. There is no budget or pricing on this storefront.
+            After this page, please choose your brand logo (Republic Airways or MESA Airlines). This choice
+            will determine item color options.
+          </li>
+          <li>There are various options you can choose from in different item colors and/or sizes.</li>
+          <li>
+            You may only select <strong>one</strong> item to redeem in this program.
           </li>
           <li>
-            After these instructions, choose your <strong>logo brand</strong> (Republic or Mesa). That choice
-            determines which colors are available for each item.
+            If a particular size/color/etc. is not offered, you will either not see that color selection, or
+            see the option as greyed-out.
           </li>
           <li>
-            Some sizes may be temporarily unavailable — unavailable sizes are greyed out and cannot be selected.
+            You can choose to have your item sent to one of two locations: <strong>IND</strong> or{' '}
+            <strong>PHX</strong>.
           </li>
-          <li>Shipping goes to one of two designated locations. You will pick the location; no home address is needed.</li>
-          <li>One order per email. After you submit, you cannot place another order with the same email.</li>
+          <li>
+            Please enter your First Name, Last Name and Email Address during the checkout process. This will
+            be compared to an existing list of people approved to order.
+          </li>
         </ul>
 
         <div className="flex flex-col gap-3 sm:flex-row">
