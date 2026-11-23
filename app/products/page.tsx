@@ -130,7 +130,7 @@ export default function ProductsPage() {
       name: activeProduct.name,
       sku: activeProduct.sku,
       itemNumber: activeProduct.item_number,
-      imageUrl: previewImage(activeProduct, current.color),
+      imageUrl: previewImage(activeProduct, current.color, brand),
       logo: brand,
       size: needsSize ? current.size : undefined,
       color: needsColor ? current.color : undefined,
@@ -236,9 +236,13 @@ export default function ProductsPage() {
               <h2 className="text-sm font-bold text-gray-900 mb-2 leading-snug min-h-[2.5rem]">{product.name}</h2>
               <div className="aspect-[2/3] w-full overflow-hidden rounded-md bg-gray-100">
                 <CatalogImage
-                  src={previewImage(product)}
+                  src={previewImage(product, undefined, brand ?? undefined)}
                   fallbacks={[
-                    ...(product.colors ?? []).map((c) => c.image_url || ''),
+                    ...(product.colors ?? []).flatMap((c) => [
+                      c.images?.RA || '',
+                      c.images?.MESA || '',
+                      c.image_url || '',
+                    ]),
                     '/images/placeholder-product.svg',
                   ]}
                   alt={product.name}
@@ -289,9 +293,13 @@ export default function ProductsPage() {
 
             <div className="aspect-[2/3] w-full overflow-hidden rounded-md mb-4 bg-gray-100">
               <CatalogImage
-                src={previewImage(activeProduct, activeColorName)}
+                src={previewImage(activeProduct, activeColorName, brand ?? undefined)}
                 fallbacks={[
-                  ...(activeProduct.colors ?? []).map((c) => c.image_url || ''),
+                  ...(activeProduct.colors ?? []).flatMap((c) => [
+                    c.images?.RA || '',
+                    c.images?.MESA || '',
+                    c.image_url || '',
+                  ]),
                   '/images/placeholder-product.svg',
                 ]}
                 alt={`${activeProduct.name} ${activeColorName || ''}`}

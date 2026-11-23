@@ -9,7 +9,14 @@ export type SizeAvailability = 'available' | 'unavailable'
 /** One color variant with logo eligibility and per-size stock flags. */
 export interface ProductColor {
   name: string
+  /** Fallback / legacy single image when brand-specific files are not split yet. */
   image_url?: string
+  /**
+   * Logo-specific photos. Files on disk follow:
+   * /images/{RA|MESA}_{ItemNumber}_{ColorToken}.jpg
+   * e.g. RA_CT106416_CARBON.HTHR.jpg
+   */
+  images?: { RA?: string; MESA?: string }
   logos: { RA: boolean; MESA: boolean }
   /** Size key present only when the style offers that size for this color. */
   sizes: Record<string, SizeAvailability>

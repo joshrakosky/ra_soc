@@ -39,10 +39,21 @@ function parseColors(value: unknown): ProductColor[] | null {
       'logos' in entry && entry.logos && typeof entry.logos === 'object'
         ? (entry.logos as Record<string, unknown>)
         : {}
+    // Optional per-logo image map (RA / MESA embroidery variants).
+    let images: ProductColor['images']
+    if ('images' in entry && entry.images && typeof entry.images === 'object') {
+      const raw = entry.images as Record<string, unknown>
+      images = {
+        RA: typeof raw.RA === 'string' ? raw.RA : undefined,
+        MESA: typeof raw.MESA === 'string' ? raw.MESA : undefined,
+      }
+    }
+
     colors.push({
       name: entry.name,
       image_url:
         'image_url' in entry && typeof entry.image_url === 'string' ? entry.image_url : undefined,
+      images,
       logos: {
         RA: Boolean(logosRaw.RA),
         MESA: Boolean(logosRaw.MESA),
@@ -105,11 +116,31 @@ export function sizesForColor(color: ProductColor | undefined): string[] {
   return order.filter((size) => keys.includes(size)).concat(keys.filter((k) => !order.includes(k)))
 }
 
-export function previewImage(product: SocProduct, colorName?: string): string {
+/** Prefer brand-specific color photo, then shared image_url, then product fallback. */
+export function previewImage(
+  product: SocProduct,
+  colorName?: string,
+  brand?: LogoBrand
+): string {
+  const resolve = (color: ProductColor | undefined): string | undefined => {
+    if (!color) return undefined
+    if (brand && color.images?.[brand]) return color.images[brand]
+    return color.image_url
+  }
+
   if (colorName) {
     const match = product.colors?.find((color) => color.name === colorName)
-    if (match?.image_url) return match.image_url
+    const url = resolve(match)
+    if (url) return url
   }
+
+  // Grid cards: first color eligible for the shopper's logo brand.
+  if (brand) {
+    const firstBrandColor = colorsForBrand(product, brand)[0]
+    const url = resolve(firstBrandColor)
+    if (url) return url
+  }
+
   if (product.colors?.[0]?.image_url) return product.colors[0].image_url
   return product.image_url || '/images/placeholder-product.svg'
 }

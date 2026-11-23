@@ -186,9 +186,10 @@ INSERT INTO ra_soc_products (
   NULL,
   'CT106416',
   'CT106416',
-  '/images/CT106416_Black.jpg',
+  -- Filenames match assets: {RA|MESA}_{Item}_{ColorToken}.jpg
+  '/images/RA_CT106416_BLACK.jpg',
   ARRAY['S', 'M', 'L', 'XL', '2XL', '3XL']::TEXT[],
-  '[{"name":"Black","image_url":"/images/CT106416_Black.jpg","logos":{"RA":true,"MESA":true},"sizes":{"S":"available","M":"available","L":"available","XL":"available","2XL":"available","3XL":"available"}},{"name":"Carbon Heather","image_url":"/images/CT106416_CarbonHeather.jpg","logos":{"RA":true,"MESA":true},"sizes":{"S":"available","M":"available","L":"available","XL":"available","2XL":"available","3XL":"available"}},{"name":"Heather Grey","image_url":"/images/CT106416_HeatherGrey.jpg","logos":{"RA":true,"MESA":true},"sizes":{"S":"available","M":"available","L":"available","XL":"available","2XL":"available","3XL":"available"}},{"name":"Navy","image_url":"/images/CT106416_Navy.jpg","logos":{"RA":true,"MESA":true},"sizes":{"S":"available","M":"available","L":"available","XL":"available","2XL":"available","3XL":"available"}}]'::JSONB,
+  '[{"name":"Black","image_url":"/images/RA_CT106416_BLACK.jpg","images":{"RA":"/images/RA_CT106416_BLACK.jpg","MESA":"/images/MESA_CT106416_BLACK.jpg"},"logos":{"RA":true,"MESA":true},"sizes":{"S":"available","M":"available","L":"available","XL":"available","2XL":"available","3XL":"available"}},{"name":"Carbon Heather","image_url":"/images/RA_CT106416_CARBON.HTHR.jpg","images":{"RA":"/images/RA_CT106416_CARBON.HTHR.jpg","MESA":"/images/MESA_CT106416_CARBON.HTHR.jpg"},"logos":{"RA":true,"MESA":true},"sizes":{"S":"available","M":"available","L":"available","XL":"available","2XL":"available","3XL":"available"}},{"name":"Heather Grey","image_url":"/images/RA_CT106416_HEATHER.GREY.jpg","images":{"RA":"/images/RA_CT106416_HEATHER.GREY.jpg","MESA":"/images/MESA_CT106416_HEATHER.GREY.jpg"},"logos":{"RA":true,"MESA":true},"sizes":{"S":"available","M":"available","L":"available","XL":"available","2XL":"available","3XL":"available"}},{"name":"Navy","image_url":"/images/RA_CT106416_NAVY.jpg","images":{"RA":"/images/RA_CT106416_NAVY.jpg","MESA":"/images/MESA_CT106416_NAVY.jpg"},"logos":{"RA":true,"MESA":true},"sizes":{"S":"available","M":"available","L":"available","XL":"available","2XL":"available","3XL":"available"}}]'::JSONB,
   9,
   TRUE
 )
