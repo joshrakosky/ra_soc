@@ -16,6 +16,7 @@ import {
   PRODUCT_STYLES,
   productRequiresColor,
   productRequiresSize,
+  sizeChartHref,
   sizesForColor,
   soleSizeForColor,
   type ProductStyle,
@@ -77,6 +78,7 @@ export default function ProductsPage() {
     activeProduct && brand && activeColorName
       ? getProductColor(activeProduct, brand, activeColorName)
       : undefined
+  const sizeChartUrl = sizeChartHref(activeProduct?.size_chart_url)
 
   const updateSelection = (productId: string, patch: Partial<CardSelection>) => {
     setSelections((prev) => {
@@ -332,6 +334,17 @@ export default function ProductsPage() {
                     })}
                   </div>
                 </div>
+              )}
+
+              {sizeChartUrl && (
+                <a
+                  href={sizeChartUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex w-fit items-center rounded-md border border-[#00263a] px-4 py-2 text-sm font-medium text-[#00263a] hover:bg-gray-50"
+                >
+                  Size chart
+                </a>
               )}
 
               {productRequiresSize(activeProduct, brand) && !soleSizeForColor(activeColor) && (

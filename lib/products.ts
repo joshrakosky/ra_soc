@@ -14,6 +14,8 @@ export interface SocProduct {
   image_url: string | null
   available_sizes: string[] | null
   colors: ProductColor[] | null
+  /** External spec sheet. Empty when this style has no size chart. */
+  size_chart_url: string | null
   sort_order: number
   active: boolean
 }
@@ -77,8 +79,21 @@ export function toSocProduct(row: Record<string, unknown>): SocProduct {
       ? row.available_sizes.filter((size): size is string => typeof size === 'string')
       : null,
     colors: parseColors(row.colors),
+    size_chart_url: sizeChartHref(row.size_chart_url),
     sort_order: Number(row.sort_order ?? 0),
     active: Boolean(row.active),
+  }
+}
+
+/** Only http(s) spec-sheet links are opened from the product popup. */
+export function sizeChartHref(value: unknown): string | null {
+  if (typeof value !== 'string' || !value.trim()) return null
+  try {
+    const url = new URL(value.trim())
+    if (url.protocol !== 'https:' && url.protocol !== 'http:') return null
+    return url.toString()
+  } catch {
+    return null
   }
 }
 

@@ -13,6 +13,8 @@ CREATE TABLE IF NOT EXISTS ra_soc_products (
   -- Per-color logo eligibility + soft inventory:
   -- [{"name":"Red","logos":{"RA":true,"MESA":false},"sizes":{"XS":"available","S":"unavailable"},"image_url":"..."}]
   colors JSONB,
+  -- SanMar spec sheet, when the catalog row has one. Blank for drinkware and tech.
+  size_chart_url TEXT,
   sort_order INTEGER DEFAULT 0,
   active BOOLEAN DEFAULT TRUE,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()

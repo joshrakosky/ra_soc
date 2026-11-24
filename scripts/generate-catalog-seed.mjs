@@ -45,6 +45,8 @@ const COL_ITEM = 1
 const COL_COLOR = 2
 const COL_LOGO_RA = 12
 const COL_LOGO_MESA = 13
+// Excel column P, after sheet_to_json drops the empty column A.
+const COL_SIZE_CHART = 14
 
 // Dropped from the store. Skip them so a seed rebuild does not turn them back on.
 const EXCLUDED_ITEMS = new Set(['MRA220', 'MRAW221'])
@@ -102,12 +104,15 @@ for (let i = 2; i < rows.length; i++) {
       continue
     }
     sortOrder += 1
+    const chartCell = row[COL_SIZE_CHART] != null ? String(row[COL_SIZE_CHART]).trim() : ''
     current = {
       name: itemName,
       itemNumber,
       colors: [],
       sizeSet: new Set(),
       sortOrder,
+      // Spec sheet lives on the product row, not each color.
+      sizeChartUrl: /^https?:\/\//i.test(chartCell) ? chartCell : null,
     }
     products.set(itemNumber, current)
   }
@@ -149,7 +154,7 @@ for (const product of products.values()) {
   const colorsJson = JSON.stringify(product.colors)
 
   lines.push(`INSERT INTO ra_soc_products (`)
-  lines.push(`  name, description, sku, item_number, image_url, available_sizes, colors, sort_order, active`)
+  lines.push(`  name, description, sku, item_number, image_url, available_sizes, colors, size_chart_url, sort_order, active`)
   lines.push(`) VALUES (`)
   lines.push(`  ${sqlString(product.name)},`)
   lines.push(`  NULL,`)
@@ -162,6 +167,7 @@ for (const product of products.values()) {
       : `  NULL,`
   )
   lines.push(`  ${sqlString(colorsJson)}::JSONB,`)
+  lines.push(`  ${product.sizeChartUrl ? sqlString(product.sizeChartUrl) : 'NULL'},`)
   lines.push(`  ${product.sortOrder},`)
   lines.push(`  TRUE`)
   lines.push(`)`)
@@ -171,6 +177,7 @@ for (const product of products.values()) {
   lines.push(`  image_url = EXCLUDED.image_url,`)
   lines.push(`  available_sizes = EXCLUDED.available_sizes,`)
   lines.push(`  colors = EXCLUDED.colors,`)
+  lines.push(`  size_chart_url = EXCLUDED.size_chart_url,`)
   lines.push(`  sort_order = EXCLUDED.sort_order,`)
   lines.push(`  active = EXCLUDED.active;`)
   lines.push('')
