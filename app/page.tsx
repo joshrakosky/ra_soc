@@ -52,7 +52,7 @@ export default function LandingPage() {
                 setError('')
               }}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#c8102e] focus:border-transparent bg-white"
-              placeholder="you@example.com"
+              placeholder="enter email"
               required
             />
           </div>
