@@ -50,50 +50,6 @@ ON CONFLICT (sku) DO UPDATE SET
 INSERT INTO ra_soc_products (
   name, description, sku, item_number, image_url, available_sizes, colors, sort_order, active
 ) VALUES (
-  'MiiR® Kumo 1/4-Snap Pullover',
-  NULL,
-  'MRA220',
-  'MRA220',
-  '/images/MRA220_IndigoNavy.jpg',
-  ARRAY['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL']::TEXT[],
-  '[{"name":"Indigo Navy","image_url":"/images/MRA220_IndigoNavy.jpg","logos":{"RA":true,"MESA":true},"sizes":{"XS":"available","S":"available","M":"unavailable","L":"unavailable","XL":"unavailable","2XL":"available","3XL":"available","4XL":"available"}},{"name":"Pitch Black","image_url":"/images/MRA220_PitchBlack.jpg","logos":{"RA":true,"MESA":true},"sizes":{"XS":"available","S":"available","M":"unavailable","L":"unavailable","XL":"available","2XL":"available","3XL":"available","4XL":"available"}}]'::JSONB,
-  3,
-  TRUE
-)
-ON CONFLICT (sku) DO UPDATE SET
-  name = EXCLUDED.name,
-  item_number = EXCLUDED.item_number,
-  image_url = EXCLUDED.image_url,
-  available_sizes = EXCLUDED.available_sizes,
-  colors = EXCLUDED.colors,
-  sort_order = EXCLUDED.sort_order,
-  active = EXCLUDED.active;
-
-INSERT INTO ra_soc_products (
-  name, description, sku, item_number, image_url, available_sizes, colors, sort_order, active
-) VALUES (
-  'MiiR® Women''s Kumo 1/4-Zip Pullover',
-  NULL,
-  'MRAW221',
-  'MRAW221',
-  '/images/MRAW221_IndigoNavy.jpg',
-  ARRAY['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL']::TEXT[],
-  '[{"name":"Indigo Navy","image_url":"/images/MRAW221_IndigoNavy.jpg","logos":{"RA":true,"MESA":true},"sizes":{"XS":"available","S":"unavailable","M":"unavailable","L":"available","XL":"available","2XL":"available","3XL":"available","4XL":"available"}},{"name":"Pitch Black","image_url":"/images/MRAW221_PitchBlack.jpg","logos":{"RA":true,"MESA":true},"sizes":{"XS":"available","S":"unavailable","M":"unavailable","L":"available","XL":"available","2XL":"available","3XL":"available","4XL":"available"}}]'::JSONB,
-  4,
-  TRUE
-)
-ON CONFLICT (sku) DO UPDATE SET
-  name = EXCLUDED.name,
-  item_number = EXCLUDED.item_number,
-  image_url = EXCLUDED.image_url,
-  available_sizes = EXCLUDED.available_sizes,
-  colors = EXCLUDED.colors,
-  sort_order = EXCLUDED.sort_order,
-  active = EXCLUDED.active;
-
-INSERT INTO ra_soc_products (
-  name, description, sku, item_number, image_url, available_sizes, colors, sort_order, active
-) VALUES (
   'Tommy Bahama® Coconut Bay 1/2-Zip',
   NULL,
   'ST228073TB',

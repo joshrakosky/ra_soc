@@ -46,6 +46,9 @@ const COL_COLOR = 2
 const COL_LOGO_RA = 12
 const COL_LOGO_MESA = 13
 
+// Dropped from the store. Skip them so a seed rebuild does not turn them back on.
+const EXCLUDED_ITEMS = new Set(['MRA220', 'MRAW221'])
+
 function sqlString(value) {
   return `'${String(value).replace(/'/g, "''")}'`
 }
@@ -94,6 +97,10 @@ for (let i = 2; i < rows.length; i++) {
   const colorName = row[COL_COLOR] != null && String(row[COL_COLOR]).trim() ? String(row[COL_COLOR]).trim() : null
 
   if (itemName && itemNumber) {
+    if (EXCLUDED_ITEMS.has(itemNumber)) {
+      current = null
+      continue
+    }
     sortOrder += 1
     current = {
       name: itemName,

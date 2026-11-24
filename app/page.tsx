@@ -6,12 +6,11 @@ import ExportOrdersButton from '@/components/ExportOrdersButton'
 import HelpIcon from '@/components/HelpIcon'
 import RALogo from '@/components/RALogo'
 import { setUserEmail } from '@/lib/session'
-import { TEST_EMAIL } from '@/lib/test-email'
 
 export default function LandingPage() {
   const router = useRouter()
-  // Prefill the test login so repeat checkout checks start from the same address.
-  const [email, setEmail] = useState(TEST_EMAIL)
+  // Start blank. A prefilled address shows up for every visitor, including incognito.
+  const [email, setEmail] = useState('')
   const [error, setError] = useState('')
 
   const handleSubmit = (e: React.FormEvent) => {
